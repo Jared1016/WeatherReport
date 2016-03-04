@@ -1,0 +1,25 @@
+//
+//  pch.pch
+//  weatherReport
+//
+//  Created by lanou3g on 16/2/29.
+//  Copyright © 2016年 刘斌. All rights reserved.
+//
+
+#ifndef pch_pch
+#define pch_pch
+
+#define cellID   @"ID"
+#define getWidth    CGRectGetWidth([UIScreen mainScreen].bounds)
+#define getHeight   CGRectGetHeight([UIScreen mainScreen].bounds)
+//#define GETurl1CityName     @"http://v.juhe.cn/weather/index?cityname="
+//#define GETurl2CityName  @"&dtype=&format=&key=d58d7f86375a7cbc29a3f036a8faf792"
+//#define GETurl1WeatherChange  @"http://v.juhe.cn/weather/forecast3h.php?cityname="
+//#define GETurl2WeatherChange  @"&key=d58d7f86375a7cbc29a3f036a8faf792"
+//#define GETurlCity  @"http://v.juhe.cn/weather/citys?key=d58d7f86375a7cbc29a3f036a8faf792"
+#define get1Url    @"http://op.juhe.cn/onebox/weather/query?cityname="
+#define get2Url    @"&key=6c9aeb26ec0dd7315f30ec8b4c758d53"
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* pch_pch */
