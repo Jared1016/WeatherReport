@@ -13,7 +13,6 @@
 - (instancetype)initWithTitle:(NSString *)title subTitle:(NSString *)subTitle coordinate:(CLLocationCoordinate2D)coordinate{
     self = [super init];
     if (self) {
-        
         _title = title;
         _subtitle = subTitle;
         _coordinate = coordinate;

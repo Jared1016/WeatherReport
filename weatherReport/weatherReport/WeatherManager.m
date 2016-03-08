@@ -12,7 +12,7 @@
 #import "WeatherIDModel.h"
 #import "CityModel.h"
 #import "LB_NetTools.h"
-//#import "TodayModel.h"
+
 
 
 @interface WeatherManager ()
@@ -64,31 +64,12 @@ static WeatherManager *manager = nil;
     return _arrayDay;
 }
 
-//- (void)GetSyncAction{
-//    //网络请求
-//    //1.生成URL
-//    NSString *city = [@"北京" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//    NSLog(@"%@",city);
-//    NSString *urlStr = [GETurl1 stringByAppendingString:city];
-//    urlStr =  [urlStr stringByAppendingString:GETurl2];
-//    NSLog(@"%@",urlStr);
-//    NSURL *url = [NSURL URLWithString:urlStr];
-//    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-//    //3.发送请求
-//    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-//    //    NSLog(@"%@", data);
-//- (NSMutableArray *)arrayWeatherChange{
-//    if (!_arrayWeatherChange) {
-//        _arrayWeatherChange = [NSMutableArray array];
-//    }
-//    return _arrayWeatherChange;
-//}
-//- (NSMutableArray *)arrayWeatherID{
-//    if (!_arrayWeatherID) {
-//        _arrayWeatherID = [NSMutableArray array];
-//    }
-//    return _arrayWeatherID;
-//}
+- (NSMutableArray *)arrayNight{
+    if (!_arrayNight) {
+        _arrayNight = [NSMutableArray array];
+    }
+    return _arrayNight;
+}
 
 //网络请求
 - (NSData *)GetSyncActionUrl1:(NSString *)url1 url2:(NSString *)url2 cityName:(NSString *)cityName{
@@ -105,8 +86,11 @@ static WeatherManager *manager = nil;
     //    NSLog(@"%@", data);
     return data;
 }
+
 //解析
 - (void)analysisByWeatherChangeData:(NSData *)data{
+
+
     //json解析
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
     NSDictionary *resultDic = [dic objectForKey:@"result"];
@@ -148,67 +132,13 @@ static WeatherManager *manager = nil;
         modelDay.nongli = [weatherDic objectForKey:@"nongli"];
         NSDictionary *infoDic = [weatherDic objectForKey:@"info"];
         NSArray *dayArray = [NSArray arrayWithArray:[infoDic objectForKey:@"day"]];
+        NSArray *nightArray = [NSArray arrayWithArray:[infoDic objectForKey:@"night"]];
         [self.arrayDay addObject:dayArray];
         [self.arrayDayData addObject:modelDay];
+        [self.arrayNight addObject:nightArray];
     }
     
-//    [self.arrayAll addObject:modelAll];
-//    for (int i = 0; i < 8; i++) {
-//        WeatherChangesModel *model = [[WeatherChangesModel alloc]init];
-//        [model setValuesForKeysWithDictionary:arrayResult[i]];
-//        [self.arrayWeatherChange addObject:model];
-//        WeatherChangesModel *model2 = [_arrayWeatherChange firstObject];
-//        
-//        NSLog(@"%@",model2.sh);
-//        
-//    }
 }
-////解析城市名称
-//- (void)analysisWithCityName{
-//    [LB_NetTools SessionDataWithUrl:GETurlCity HttpMethod:@"GET" HttpBody:nil revokeBlock:^(NSData *data) {
-//        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-////        json解析
-//            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-//            NSArray *arrayResult = [dic objectForKey:@"result"];
-//            for (int i = 0; i < 2573; i++) {
-//                 CityModel *model = [[CityModel alloc]init];
-//                [model setValuesForKeysWithDictionary:arrayResult[i]];
-//                [self.arrayCityName addObject:model];
-//            }
-//    }];}
-////解析今天和未来7天的天气
-//- (void)analysisByCityNameData:(NSData *)data{
-//    //json解析
-//    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-//    NSLog(@"%@",dic);
-//    NSDictionary *result = [dic objectForKey:@"result"];
-//    NSDictionary *future = [result  objectForKey:@"future"];
-//    //future
-//    for (int i = 0; i < 7; i++) {
-//        NSString *dateStr = [self nowTime:i];
-//        dateStr = [@"day_" stringByAppendingString:dateStr];
-//        NSDictionary *date = [future objectForKey:dateStr];
-//        Model *model = [[Model alloc]init];
-//        [model setValuesForKeysWithDictionary:date];
-//        [self.arrayFuture addObject:model];
-//        //IDmodel
-//        NSDictionary *day = [date objectForKey:@"weather_id"];
-//        WeatherIDModel *modelID = [[WeatherIDModel alloc]init];
-//        [modelID setValuesForKeysWithDictionary:day];
-//        [self.arrayWeatherID addObject:modelID];
-//        NSLog(@"%@, %@",modelID.fa, modelID.fb);
-//    }
-//    //sk
-//    Model *modelSk = [[Model alloc]init];
-//    [modelSk setValuesForKeysWithDictionary:[result objectForKey:@"sk"]];
-//    [self.arraySk addObject:modelSk];
-//    //today
-//    Model *modelToday = [[Model alloc]init];
-//    [modelToday setValuesForKeysWithDictionary:[result objectForKey:@"today"]];
-//    [self.arrayToday addObject:modelToday];
-//
-//}
-//}
 
 - (NSString *)nowTime:(int)count{
     NSTimeInterval time = 8 * 60 *60 + (24 * 60 * 60 * count);

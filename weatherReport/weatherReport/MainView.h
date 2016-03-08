@@ -11,6 +11,8 @@
 @class FutureModel;
 @interface MainView : UIView
 
+//背景图片
+@property(nonatomic,strong)UIImageView *imageView;
 //firstView
 @property(nonatomic,strong)UIScrollView *scrollViewFirst;
 @property(nonatomic,strong)UIView *firstView;
@@ -23,6 +25,9 @@
 @property(nonatomic,strong)UIView *secondView;
 @property(nonatomic,strong)UILabel *labelForecast;
 @property(nonatomic,strong)UIScrollView *scrollViewSecond;
+
+//thirdView
+@property(nonatomic,strong)UIView *thirdView;
 
 //一天里的不同时间不同温度
 @property(nonatomic,strong)ScrollViewModel *model1;
@@ -44,5 +49,10 @@
 @property(nonatomic,strong)FutureModel *futureModel7;
 @property(nonatomic,strong)FutureModel *futureModel8;
 
+//夜晚天气
+@property(nonatomic,strong)UILabel *labelNight;
+
+//晚间大图片
+@property(nonatomic,strong)UIImageView *imageBig;
 
 @end

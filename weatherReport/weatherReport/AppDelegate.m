@@ -10,7 +10,7 @@
 #import "MainViewController.h"
 #import "LWLeftEnumViewController.h"
 #import "LWSetUpViewController.h"
-
+//#import "UDNavigationController.h"
 @interface AppDelegate ()
 
 @end
@@ -24,14 +24,13 @@
     self.window.backgroundColor = [UIColor colorWithRed:0.044 green:1.000 blue:0.960 alpha:1.000];
     
 
-//    LWSetUpViewController *mvc = [[LWSetUpViewController alloc]init];
-//    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:mvc];
-//    
-//    self.window.rootViewController = nvc;
+
+
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[MainViewController controller]];
+
     
     _itrAirSideMenu = [[ITRAirSideMenu alloc] initWithContentViewController:navigationController leftMenuViewController:[LWLeftEnumViewController controller]];
-    _itrAirSideMenu.contentViewShadowColor = [UIColor blackColor];
+    _itrAirSideMenu.contentViewShadowColor = [UIColor whiteColor];
     _itrAirSideMenu.contentViewShadowOffset = CGSizeMake(0, 0);
     _itrAirSideMenu.contentViewShadowOpacity = 0.6;
     _itrAirSideMenu.contentViewShadowRadius = 12;
