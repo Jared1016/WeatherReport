@@ -12,19 +12,29 @@
 #import "RowCell.h"
 #import "LWNoticeRowTableViewCell.h"
 #import "LWTimeAndAddressViewController.h"
+#import "JPUSHService.h"
 @interface LWNoticeViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic, strong) UITableView *LWNoticeTableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) NSIndexPath* IndexPathAll;
 @end
 
-@implementation LWNoticeViewController
+@implementation LWNoticeViewController{
+    UILocalNotification *_notification;
+}
 
 -(NSMutableArray *)dataArray{
     if (_dataArray == nil) {
         _dataArray = [NSMutableArray array];
     }
     return _dataArray;
+}
+
+-(NSString *)date{
+    if (!_date) {
+        _date = [[NSString alloc] init];
+    }
+    return _date;
 }
 
 - (void)viewDidLoad {
@@ -45,6 +55,12 @@
     [self addTestData];
     _IndexPathAll = [NSIndexPath new];
     
+    [self.LWNoticeTableView registerNib:[UINib nibWithNibName:@"LWNoticeRowTableViewCell" bundle:nil] forCellReuseIdentifier:indentifiderRow];
+    
+    
+    
+    
+    [self.LWNoticeTableView reloadData];
     // Do any additional setup after loading the view.
 }
 
@@ -64,11 +80,11 @@
     node2.sonNodes = nil;
     node2.isExpanded = FALSE;
     RowCell *tmp1 = [RowCell new];
-    tmp1.interval = @"时间和地点";
-    tmp1.setUpTime = @"12:45 上午, 2 位置";
+    tmp1.interval = @"时间";
+    tmp1.setUpTime = _date;
     node2.nodeData = tmp1;
 
-
+    NSLog(@"%@",_date);
 
     node.sonNodes = [NSMutableArray arrayWithObjects:node2, nil];
     _dataArray = [NSMutableArray arrayWithObjects:node, nil];
@@ -91,13 +107,13 @@
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return _dataArray.count;
 }
-
+    static NSString *indentifiderRow = @"RowwCell";
 #pragma mark 返回内容
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     _IndexPathAll = indexPath;
     
     static NSString *indentifiderHead = @"HeadCell";
-    static NSString *indentifiderRow = @"RowwCell";
+
     
     TreeModel *node;
     if (indexPath.row == NodeTypeSectionHead) {
@@ -113,23 +129,20 @@
             cell = [[LWNoticeTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:indentifiderHead];
         }
 
-        [cell.LWNoticeSwitch addTarget:self action:@selector(LWNoticeSwitchAction) forControlEvents:UIControlEventAllTouchEvents];
+        [cell.LWNoticeSwitch addTarget:self action:@selector(LWNoticeSwitchAction:) forControlEvents:UIControlEventAllTouchEvents];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         return cell;
     }else{
-        LWNoticeRowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:indentifiderRow];
-        if (cell == nil) {
-            cell = [[[NSBundle mainBundle] loadNibNamed:@"LWNoticeRowTableViewCell" owner:self options:nil] lastObject];
-        }
+        LWNoticeRowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:indentifiderRow forIndexPath:indexPath];
         cell.node = node;
         RowCell *nodeData = node.nodeData;
         cell.intervalLable.text = nodeData.interval;
-        cell.setUpTimeLable.text = nodeData.setUpTime;
+        cell.setUpTimeLable.text = _date;
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         return cell;
     }
     
-//    return cell;
+//    return cell;LWTimeChooseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:indentifiderRow forIndexPath:indexPath];
 }
 
 
@@ -139,12 +152,16 @@
     LWTimeAndAddressViewController *LWTDVC = [LWTimeAndAddressViewController new];
     if (indexPath.row > 0) {
         [self.navigationController pushViewController:LWTDVC animated:YES];
+        LWTDVC.block = ^(NSString *date){
+            self.date = date;
+            [self.LWNoticeTableView reloadData];
+        };
     }
 }
 
 
 #pragma mark - cell 上开关的响应事件
--(void)LWNoticeSwitchAction{
+-(void)LWNoticeSwitchAction:(UISwitch *)Switch {
         TreeModel *node = _dataArray[_IndexPathAll.section];
         BOOL isExpand = node.isExpanded;
         
@@ -161,6 +178,28 @@
             
         }
         [self.LWNoticeTableView reloadData];
+    
+    if (Switch.on) {
+        NSDateFormatter* formater = [[NSDateFormatter alloc] init];
+        [formater setDateFormat:@"HH时mm分"];
+        NSDate* date = [formater dateFromString:_date];
+        _notification = [JPUSHService setLocalNotification:date alertBody:@"zz" badge:-1 alertAction:@"确定" identifierKey:@"zzz" userInfo:nil soundName:nil];
+        NSString *result;
+        if (_notification) {
+            result = @"设置本地通知成功";
+        } else {
+            result = @"设置本地通知失败";
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"设置"
+                                                        message:result
+                                                       delegate:self
+                                              cancelButtonTitle:@"确定"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+    }else{
+        [JPUSHService clearAllLocalNotifications];
+    }
+    
 }
 
 
@@ -168,8 +207,7 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
+} 
 /*
 #pragma mark - Navigation
 

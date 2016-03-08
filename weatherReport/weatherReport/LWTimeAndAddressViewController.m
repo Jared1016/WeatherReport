@@ -10,7 +10,7 @@
 #import "TreeModel.h"
 #import "LWTimeChooseTableViewCell.h"
 @interface LWTimeAndAddressViewController ()<UITableViewDataSource,UITableViewDelegate>
-@property (nonatomic, strong) UITableView *LWTDVCTableView;
+
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, copy) NSMutableString *TimeString;
 @property (nonatomic, strong) NSMutableArray *addressArray;
@@ -48,7 +48,17 @@
     
     [self.LWTDVCTableView reloadData];
     
+    [self.LWTDVCTableView registerNib:[UINib nibWithNibName:@"LWTimeChooseTableViewCell" bundle:nil] forCellReuseIdentifier:indentifiderRow];
+    
+    UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"i11"] style:UIBarButtonItemStyleDone target:self action:@selector(returnButtonDid)];
+    [self.navigationItem setLeftBarButtonItem:barItem];
     // Do any additional setup after loading the view.
+}
+
+
+-(void)returnButtonDid{
+    [self.navigationController popViewControllerAnimated:YES];
+    self.block(_date);
 }
 
 #pragma mark - 添加数据
@@ -94,13 +104,20 @@
     }
     return 1;
     }else{
-        return 2;
+        return 1;
     }
 }
-
+-(NSString *)date{
+    if (!_date) {
+        _date = [[NSString alloc]init];
+    }
+    return _date;
+}
+ static NSString *indentifiderRow = @"RowwCell";
 #pragma mark 返回内容
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *indentifiderRow = @"RowwCell";
+   
+
     
     TreeModel *node;
     if (indexPath.row == NodeTypeSectionHead) {
@@ -118,12 +135,18 @@
         
         if (indexPath.section == 0 && indexPath.row == 0) {
             cell.textLabel.text = @"时间";
-            cell.detailTextLabel.text = @"zzzz";
+            if (_date == nil) {
+                
+                cell.detailTextLabel.text = @"";
+            }else{
+                cell.detailTextLabel.text = _date;
+            }
+            
             cell.detailTextLabel.textColor = [UIColor colorWithRed:0.1827 green:0.4011 blue:1.0 alpha:1.0];
         }
         else {
             
-            NSArray *array = @[@"目前位置",@"巴黎"];
+            NSArray *array = @[@"目前位置"];
             cell.textLabel.text = array[indexPath.row];
  
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -131,11 +154,11 @@
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         return cell;
     }else{
-        LWTimeChooseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:indentifiderRow];
-        if (cell == nil) {
-            cell = [[[NSBundle mainBundle] loadNibNamed:@"LWTimeChooseTableViewCell" owner:self options:nil] lastObject];
-        }
-        NSLog(@"time is %@",cell.String);
+        LWTimeChooseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:indentifiderRow forIndexPath:indexPath];
+        cell.block = ^(NSString *date){
+            self.date = date;
+            [self.LWTDVCTableView reloadData];
+        };
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
         return cell;
     }
@@ -182,9 +205,10 @@
     [tableView reloadData];
 }
 
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    // Dispose of any resources that0 can be recreated.
 }
 
 /*

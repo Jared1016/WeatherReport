@@ -7,24 +7,28 @@
 //
 
 #import "LWTimeChooseTableViewCell.h"
+#import "LWTimeAndAddressViewController.h"
+
 
 @interface LWTimeChooseTableViewCell ()
+
+
 
 @end
 
 @implementation LWTimeChooseTableViewCell
-
--(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        [self SetUpView];
-    }
-    return self;
-}
-
--(void)SetUpView{
-    
-}
+//
+//-(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+//    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+//    if (self) {
+//        [self SetUpView];
+//    }
+//    return self;
+//}
+//
+//-(void)SetUpView{
+//    
+//}
 
 
 - (IBAction)DatePicker:(id)sender {
@@ -40,14 +44,16 @@
     //使用日期格式器格式化日期、时间
     NSString *destDateString = [dateFormatter stringFromDate:selected];
     
-    NSMutableString *message =  [NSMutableString stringWithFormat:@"%@",destDateString];
+    NSString *message =  [NSString stringWithFormat:@"%@",destDateString];
     
     NSLog(@"%@",message);
     
-    _String = message;
-    NSLog(@"%@",_String);
+    self.block(message);
+//    LWTimeAndAddressViewController *LWVC = [LWTimeAndAddressViewController new];
+//    LWVC.date = message;
+//    NSLog(@"LWVC.date======%@",LWVC.date);
+//    [LWVC.LWTDVCTableView reloadData];
     
-//    _String = [NSString stringWithFormat:@"%@",message];
 }
 
 - (void)awakeFromNib {

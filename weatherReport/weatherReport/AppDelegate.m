@@ -10,7 +10,7 @@
 #import "MainViewController.h"
 #import "LWLeftEnumViewController.h"
 #import "LWSetUpViewController.h"
-
+#import "JPUSHService.h"
 @interface AppDelegate ()
 
 @end
@@ -48,7 +48,23 @@
     _itrAirSideMenu.menuViewRotatingAngle = 30.0f;
     _itrAirSideMenu.menuViewTranslateX = 20.0f;
     
-
+    
+    
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
+        //可以添加自定义categories
+        [JPUSHService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+                                                          UIUserNotificationTypeSound |
+                                                          UIUserNotificationTypeAlert)
+                                              categories:nil];
+    } else {
+        //categories 必须为nil
+        [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                          UIRemoteNotificationTypeSound |
+                                                          UIRemoteNotificationTypeAlert)
+                                              categories:nil];
+    }
+    
+    
     self.window.rootViewController = _itrAirSideMenu;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

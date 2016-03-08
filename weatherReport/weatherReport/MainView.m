@@ -186,7 +186,6 @@
     UIView *lastView;
     
     int i = 0;
-    int time = 0;
     for (ScrollViewModel *view in modelArray) {
         [self.scrollViewSecond addSubview:view];
 /*

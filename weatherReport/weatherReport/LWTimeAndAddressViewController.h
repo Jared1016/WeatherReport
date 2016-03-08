@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+typedef void(^clickAction)(NSString *date);
 @interface LWTimeAndAddressViewController : UIViewController
-
+@property (nonatomic, strong) UITableView *LWTDVCTableView;
+@property (nonatomic,strong)NSString *date;
+@property (strong,nonatomic) clickAction block;
 @end

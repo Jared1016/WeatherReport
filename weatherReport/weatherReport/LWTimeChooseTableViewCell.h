@@ -8,11 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^clickAction)(NSString *date);
 @interface LWTimeChooseTableViewCell : UITableViewCell
+
+
 
 @property (nonatomic, copy) NSMutableString *String;
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *DatePicker;
 
+@property (strong,nonatomic) clickAction block;
 
 @end

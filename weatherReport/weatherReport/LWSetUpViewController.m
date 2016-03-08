@@ -42,7 +42,7 @@
 
 #pragma mark - 导航栏右侧完成按钮点击事件；
 -(void)RightButtonAction{
-    MainViewController *mainVC = [MainViewController new];
+//    MainViewController *mainVC = [MainViewController new];
     /**
      *  暂时这么跳转
      */
