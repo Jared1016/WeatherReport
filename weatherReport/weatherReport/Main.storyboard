@@ -22,8 +22,15 @@
                     </view>
                     <navigationItem key="navigationItem" id="xsM-xn-7FE">
                         <barButtonItem key="leftBarButtonItem" title="Menu" id="Qjo-dt-bXi">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="setAction:" destination="BYZ-38-t0r" id="qk4-QK-GMD"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="sVh-HX-9jt">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="addCityAction:" destination="BYZ-38-t0r" id="Xty-Hd-eUG"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -31,7 +38,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="777" y="912"/>
+            <point key="canvasLocation" x="593" y="469"/>
         </scene>
         <!--Left Enum View Controller-->
         <scene sceneID="LZh-qa-7X0">
@@ -105,7 +112,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h4z-Ar-j1y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1422" y="920"/>
+            <point key="canvasLocation" x="1046" y="423"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Wiz-Pt-Rbs">
@@ -124,7 +131,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R9E-AT-snG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="236" y="708"/>
+            <point key="canvasLocation" x="63" y="448"/>
         </scene>
     </scenes>
 </document>

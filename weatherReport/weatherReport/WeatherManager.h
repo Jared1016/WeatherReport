@@ -7,12 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-//@class WeatherIDModel;
+
 @class Model;
 
 @interface WeatherManager : NSObject
 
-//@property(nonatomic,strong)Model *modelLift;
 
 
 @property (nonatomic,strong)NSArray *arrayLife;
@@ -22,23 +21,9 @@
 //未来7天天气数组
 @property (nonatomic,strong)NSMutableArray *arrayDay;
 @property (nonatomic,strong)NSMutableArray *arrayDayData;
-////未来7天
+@property (nonatomic,strong)NSMutableArray *arrayNight;
 
 
-//@property (nonatomic,strong)NSMutableArray *arrayToday;
-//
-////mark
-//@property (nonatomic,strong)NSDictionary *arrayMark;
-//
-//////weatherIDModel
-////@property (nonatomic,strong)WeatherIDModel *modelID;
-//
-////一天中的不同时间温度
-//@property (nonatomic,strong)NSMutableArray *arrayWeatherChange;
-////城市列表名称
-//@property (nonatomic,strong)NSMutableArray *arrayCityName;
-////weatherID
-//@property (nonatomic,strong)NSMutableArray *arrayWeatherID;
 + (instancetype)shareInstance;
 
 

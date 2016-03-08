@@ -11,4 +11,7 @@
 @interface MainViewController : UIViewController
 @property(nonatomic,strong)MainView *mv;
 + (instancetype) controller;
+
+@property (nonatomic,strong)NSString *nowCitytName;
+
 @end
