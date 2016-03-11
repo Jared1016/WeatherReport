@@ -8,15 +8,14 @@
 
 #import "WeatherManager.h"
 #import "Model.h"
-#import "WeatherChangesModel.h"
-#import "WeatherIDModel.h"
 #import "CityModel.h"
 #import "LB_NetTools.h"
-
-
+//#import "LocalModel.h"
+#import "Reachability.h"
 
 @interface WeatherManager ()
-
+//判断网络状态
+@property (nonatomic, strong) Reachability *conn;
 
 @end
 
@@ -34,6 +33,8 @@ static WeatherManager *manager = nil;
     });
     return manager;
 }
+
+
 //标示用的
 //- (NSDictionary *)arrayMark{
 //    if (!_arrayMark) {
@@ -42,12 +43,21 @@ static WeatherManager *manager = nil;
 //    return _arrayMark;
 //}
 
+<<<<<<< HEAD
 
 - (BOOL)activeCentigrade{
     if (!_activeCentigrade) {
         _activeCentigrade =  NO;
     }
     return _activeCentigrade;
+=======
+//懒加载
+- (NSMutableArray *)arrayDate{
+    if (!_arrayDate) {
+        _arrayDate = [NSMutableArray arrayWithObjects:@"城市列表" ,nil];
+    }
+    return _arrayDate;
+>>>>>>> cddd5bc1e2ff8f3643d845b54bd0b46bfd3a0676
 }
 
 - (NSArray *)arrayLife{
@@ -88,7 +98,8 @@ static WeatherManager *manager = nil;
 //网络请求
 - (NSData *)GetSyncActionUrl1:(NSString *)url1 url2:(NSString *)url2 cityName:(NSString *)cityName{
     //1.生成URL
-    NSString *city = [@"北京" stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    NSLog(@"解析里面的cityNaME = %@", cityName);
+    NSString *city = [cityName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *urlStr = [url1 stringByAppendingString:city];
     urlStr =  [urlStr stringByAppendingString:url2];
     NSLog(@"%@",urlStr);
@@ -103,8 +114,6 @@ static WeatherManager *manager = nil;
 
 //解析
 - (void)analysisByWeatherChangeData:(NSData *)data{
-
-
     //json解析
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
     NSDictionary *resultDic = [dic objectForKey:@"result"];
@@ -135,6 +144,7 @@ static WeatherManager *manager = nil;
     //realtime
     NSDictionary *realtimeDic = [dataDic objectForKey:@"realtime"];
     _modelAll.time = [realtimeDic objectForKey:@"time"];
+    _modelAll.date = [realtimeDic objectForKey:@"date"];
     NSDictionary *weatherDic = [realtimeDic objectForKey:@"weather"];
     [_modelAll setValuesForKeysWithDictionary:weatherDic];
     NSDictionary *windDic = [realtimeDic objectForKey:@"wind"];
@@ -151,16 +161,60 @@ static WeatherManager *manager = nil;
         [self.arrayDayData addObject:modelDay];
         [self.arrayNight addObject:nightArray];
     }
-    
 }
 
-- (NSString *)nowTime:(int)count{
-    NSTimeInterval time = 8 * 60 *60 + (24 * 60 * 60 * count);
-    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:time];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"yyyyMMdd"];
-    return [formatter stringFromDate:date];
+- (void)writeToLocal{
+    NSMutableData *data = [NSMutableData data];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc]initForWritingWithMutableData:data];
+    _modelAll.nowCity = _chooseCityName;
+    [archiver encodeObject:_modelAll forKey:@"modelAll"];
+    [archiver finishEncoding];
+    
+    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    path = [path stringByAppendingString:@"model.dat"];
+    NSLog(@"本地路径为： %@",path);
+    [data writeToFile:path atomically:YES];
 }
+
+- (Model *)readFromLocal{
+    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    path = [path stringByAppendingString:@"model.dat"];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]initForReadingWithData:data];
+    Model *model = [unarchiver decodeObjectForKey:@"modelAll"];
+    return model;
+}
+
+
+-(BOOL) isConnectionAvailable{
+    
+    BOOL isExistenceNetwork = YES;
+    Reachability *reach = [Reachability reachabilityWithHostName:@"www.apple.com"];
+    switch ([reach currentReachabilityStatus]) {
+        case NotReachable:
+            isExistenceNetwork = NO;
+            NSLog(@"notReachable");
+            break;
+        case ReachableViaWiFi:
+            isExistenceNetwork = YES;
+            NSLog(@"WIFI");
+            break;
+        case ReachableViaWWAN:
+            isExistenceNetwork = YES;
+            NSLog(@"3G");
+            break;
+    }
+    return isExistenceNetwork;
+}
+
+
+//- (NSString *)nowTime:(int)count{
+//    NSTimeInterval time = 8 * 60 *60 + (24 * 60 * 60 * count);
+//    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:time];
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+//    [formatter setDateFormat:@"yyyyMMdd"];
+//    return [formatter stringFromDate:date];
+//}
 
 
 

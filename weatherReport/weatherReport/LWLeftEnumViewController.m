@@ -10,10 +10,11 @@
 #import "ITRAirSideMenu.h"
 #import "LWLeftEnumTableViewCell.h"
 #import "LWSetUpViewController.h"
-
+#import "WeatherManager.h"
 #import "SearchViewController.h"
 
-@interface LWLeftEnumViewController ()<UITableViewDataSource,UITableViewDelegate,delegateDate>
+
+@interface LWLeftEnumViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 // tableView
 @property (weak, nonatomic) IBOutlet UITableView *LWTableView;
@@ -30,30 +31,47 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+<<<<<<< HEAD
     _Section1EnumLableArray = [NSMutableArray arrayWithObjects:@"分享",@"编辑地点",@"目前位置", nil ];
     self.LWTableView.backgroundColor = [UIColor clearColor];
     self.view.backgroundColor = [UIColor colorWithRed:0.1436 green:0.1393 blue:0.1276 alpha:1.0];
+=======
+    _Section1EnumLableArray = [NSMutableArray arrayWithObjects:@"分享",@"目前位置",@"编辑地点", nil ];
+    
+    NSString *str = @"无法定位";
+    [_Section1EnumLableArray insertObject:str atIndex:2];
+    [self.LWTableView reloadData];
+    
+    
+    [self performSelector:@selector(addCityAction) withObject:self afterDelay:5];
+//    [self addCityAction];
+>>>>>>> cddd5bc1e2ff8f3643d845b54bd0b46bfd3a0676
     //不滑动
 //    self.LWTableView.scrollEnabled = NO;
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(notificationAction) name:@"改变城市" object:@"yanwu"];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(notificcationAction2) name:@"添加删除城市" object:@"yanwu"];
+
 }
 
-- (void)addDateCityName:(NSString *)cityName{
-    
-//    [_Section1EnumLableArray addObject:cityName];
-    [_arrayDate addObject:cityName];
-    NSLog(@"一共有多少城市%@", _arrayDate);
+- (void)addCityAction{
+    if ([WeatherManager shareInstance].cityName) {
+//        [_Section1EnumLableArray insertObject:[WeatherManager shareInstance].cityName atIndex:2];
+        [_Section1EnumLableArray replaceObjectAtIndex:2 withObject:[WeatherManager shareInstance].cityName];
+        [self.LWTableView reloadData];
+    }
+}
+
+
+
+- (void)notificationAction{
+    [_Section1EnumLableArray replaceObjectAtIndex:1 withObject:@"选中城市"];
+    [_Section1EnumLableArray replaceObjectAtIndex:2 withObject:[WeatherManager shareInstance].chooseCityName];
     [self.LWTableView reloadData];
 }
-
-
-
-//懒加载
-- (NSMutableArray *)arrayDate{
-    if (!_arrayDate) {
-        _arrayDate = [NSMutableArray arrayWithObjects:@"已添加地点" ,nil];
-    }
-    return _arrayDate;
+- (void)notificcationAction2{
+    [self.LWTableView reloadData];
+    NSLog(@"通知2 啊 删除啦");
 }
 
 #pragma mark - UITableViewDataSource,UITableViewDelegate 代理方法
@@ -61,7 +79,7 @@
 #pragma mark 返回行数 （根据分组的不同返回行数）
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 0) {
-        return _Section1EnumLableArray.count + _arrayDate.count ;
+        return _Section1EnumLableArray.count + [WeatherManager shareInstance].arrayDate.count;
     }else{
         return 2;
     }
@@ -73,12 +91,16 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor clearColor];
     if (indexPath.section == 0) {
-        if (indexPath.row <= 2) {
+        if (indexPath.row <= 3) {
             cell.LwLeftEnumCellLable.text = _Section1EnumLableArray[indexPath.row];
             cell.LwLeftEnumCellLable.textColor = [UIColor whiteColor];
         }else {
+<<<<<<< HEAD
             cell.LwLeftEnumCellLable.text = _arrayDate[indexPath.row - 3];
             cell.LwLeftEnumCellLable.textColor = [UIColor whiteColor];
+=======
+            cell.LwLeftEnumCellLable.text = [WeatherManager shareInstance].arrayDate[indexPath.row - 4];
+>>>>>>> cddd5bc1e2ff8f3643d845b54bd0b46bfd3a0676
         }
         NSArray *Section1EnumImageArray = @[@"分享.png",@"定位2.png"];
         if (indexPath.row < 2) {
@@ -111,15 +133,15 @@
 #pragma mark cell 点击事件 (根据点击的indexPath.row 跳转不同的控制器)
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     // 地点界面跳转
-    if (indexPath.section == 0 && indexPath.row == 1) {
-
+    if (indexPath.section == 0 && indexPath.row == 3) {
         SearchViewController *svc = [SearchViewController new];
-        svc.delegate = self;
-        svc.arrayChoose = self.arrayDate;
+
 
         UINavigationController *navigation = [[UINavigationController alloc]initWithRootViewController:svc];
+
         [self presentViewController:navigation animated:YES completion:nil];
     }
+    
     // 设置界面跳转
     if (indexPath.section == 1 && indexPath.row == 0) {
         LWSetUpViewController *LWSetUpVC = [LWSetUpViewController new];

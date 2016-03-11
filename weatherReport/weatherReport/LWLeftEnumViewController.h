@@ -11,8 +11,10 @@
 @interface LWLeftEnumViewController : UIViewController
 + (instancetype) controller;
 
-@property(nonatomic,strong)NSMutableArray *arrayDate;
+
 // 分组一 列表数组
 @property (nonatomic, strong) NSMutableArray *Section1EnumLableArray;
 
+//定位的城市名字
+@property (nonatomic,strong)NSString *city;
 @end

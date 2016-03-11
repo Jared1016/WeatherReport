@@ -12,6 +12,6 @@
 @property(nonatomic,strong)MainView *mv;
 + (instancetype) controller;
 
-@property (nonatomic,strong)NSString *nowCitytName;
+@property (nonatomic,strong)NSString *chooseName;
 
 @end

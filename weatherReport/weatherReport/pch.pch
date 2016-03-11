@@ -12,11 +12,14 @@
 #define cellID   @"ID"
 #define getWidth    CGRectGetWidth([UIScreen mainScreen].bounds)
 #define getHeight   CGRectGetHeight([UIScreen mainScreen].bounds)
-//#define GETurl1CityName     @"http://v.juhe.cn/weather/index?cityname="
-//#define GETurl2CityName  @"&dtype=&format=&key=d58d7f86375a7cbc29a3f036a8faf792"
-//#define GETurl1WeatherChange  @"http://v.juhe.cn/weather/forecast3h.php?cityname="
-//#define GETurl2WeatherChange  @"&key=d58d7f86375a7cbc29a3f036a8faf792"
-//#define GETurlCity  @"http://v.juhe.cn/weather/citys?key=d58d7f86375a7cbc29a3f036a8faf792"
+//屏蔽nslog
+#ifndef __OPTIMIZE__
+#define NSLog(...) NSLog(__VA_ARGS__)
+#else
+#define NSLog(...) {}
+#endif
+
+
 #define get1Url    @"http://op.juhe.cn/onebox/weather/query?cityname="
 #define get2Url    @"&key=6c9aeb26ec0dd7315f30ec8b4c758d53"
 // Include any system framework and library headers here that should be included in all compilation units.

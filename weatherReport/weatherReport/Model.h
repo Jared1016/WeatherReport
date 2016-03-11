@@ -37,36 +37,7 @@
 //weather
 @property(nonatomic,strong)NSString *week;
 @property(nonatomic,strong)NSString *nongli;
-
-////future里面的
-//@property(nonatomic,strong)NSString *date;
-//@property(nonatomic,strong)NSString *temperature;
-//@property(nonatomic,strong)NSString *weatherid;
-//@property(nonatomic,strong)NSString *week;
-//@property(nonatomic,strong)NSString *wind;
-////sk里面的
-//@property(nonatomic,strong)NSString *humidity;
-//@property(nonatomic,strong)NSString *temp;
-//@property(nonatomic,strong)NSString *time;
-//@property(nonatomic,strong)NSString *wind_direction;
-//@property(nonatomic,strong)NSString *wind_strength;
-////today里的
-//@property(nonatomic,strong)NSString *weather;
-//@property(nonatomic,strong)NSString *city;
-//@property(nonatomic,strong)NSString *date_y;
-////穿衣建议
-//@property(nonatomic,strong)NSString *dressing_index;
-///*穿衣建议*/
-//@property(nonatomic,strong)NSString *dressing_advice;
-///*紫外线强度*/
-//@property(nonatomic,strong)NSString *uv_index;
-///*洗车指数*/
-//@property(nonatomic,strong)NSString *wash_index;
-///*旅游指数*/
-//@property(nonatomic,strong)NSString *travel_index;
-///*晨练指数*/
-//@property(nonatomic,strong)NSString *exercise_index;
-
-
+//现在城市
+@property(nonatomic,strong)NSString *nowCity;
 
 @end

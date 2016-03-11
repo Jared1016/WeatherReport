@@ -34,19 +34,51 @@
 }
 
 
+
 - (void)setupView{
     self.backgroundColor = [UIColor colorWithRed:0.892 green:0.992 blue:0.610 alpha:1];
+
+    
+    _imageViewAnimation = [[UIImageView alloc]initWithFrame:[UIScreen mainScreen].bounds];
+    dispatch_queue_t global = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    //添加任务
+    dispatch_async(global, ^{
+        NSMutableArray *array = [NSMutableArray array];
+        for (int i = 1; i < 8; i++) {
+            UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%d.tiff",i]];
+            [array addObject:image];
+        }
+        _imageViewAnimation.animationImages = array;
+        _imageViewAnimation.animationDuration = 0.5;
+        _imageViewAnimation.animationRepeatCount = 10;
+        [_imageViewAnimation startAnimating];
+        [self addSubview:_imageViewAnimation];
+    });
+    
+    //菊花
+    NSLog(@"开始加载");
+    //创建UIActivityIndicatorView背底半透明View
+    UIView *view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [view setTag:108];
+    [view setBackgroundColor:[UIColor blackColor]];
+    [view setAlpha:0.5];
+    [self.imageViewAnimation addSubview:view];
+    
+    UIActivityIndicatorView *act = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 32.0f, 32.0f)];
+    //    [act setCenter:CGPointMake(10, 200)];
+    [act setCenter:view.center];//设置旋转菊花的中心位置
+    [act setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleWhiteLarge];//设置菊花的样式
+    [view addSubview: act];
+    [act startAnimating];
+
+    
+    
     
     //imageView
     self.imageView = [[UIImageView alloc]initWithFrame:[UIScreen mainScreen].bounds];
     [self addSubview:self.imageView];
     __weak UIView *sv = self;
-//    [_imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(sv.mas_top).offset(0);
-//        make.left.equalTo(sv.mas_left).offset(0);
-//        make.right.equalTo(sv.mas_right).offset(0);
-//        make.bottom.equalTo(sv.mas_bottom).offset(0);
-//    }];
+
     
     //scrollViewFirst
     self.scrollViewFirst = [[UIScrollView alloc]init];
@@ -57,7 +89,6 @@
     
     
     [_scrollViewFirst mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(sv).width.insets(UIEdgeInsetsMake(0, 0, 0, 0));
         make.top.equalTo(sv.mas_top).offset(0);
         make.left.equalTo(sv.mas_left).offset(0);
         make.right.equalTo(sv.mas_right).offset(0);
@@ -76,7 +107,6 @@
     }];
 
 
-    
     //firstView
     self.firstView = [[UIView alloc]init];
     [_scrollViewFirst addSubview:self.firstView];
@@ -100,6 +130,7 @@
         make.right.equalTo(_firstView.mas_left).offset(40);
         make.height.equalTo(@40);
     }];
+    
     //今天的天气状态
     self.labelWeather = [[UILabel alloc]init];
     [self.firstView addSubview:self.labelWeather];
@@ -111,6 +142,8 @@
         make.height.equalTo(@40);
     }];
 
+
+    
     //今天的风
     self.labelTemperature = [[UILabel alloc]init];
     [self.firstView addSubview:self.labelTemperature];
@@ -125,7 +158,6 @@
     }];
     
     //今天的温度
-
     self.labelTemp = [[UILabel alloc]init];
     [self.firstView addSubview:self.labelTemp];
     [self.labelTemp mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -133,6 +165,20 @@
         make.left.equalTo(_firstView.mas_left).offset(0);
         make.bottom.equalTo(_firstView.mas_bottom).offset(0);
         make.right.equalTo(_firstView.mas_left).offset(200);
+<<<<<<< HEAD
+=======
+    }];
+    
+    //今天的日期
+    self.labelToday = [[UILabel alloc]init];
+    [self.firstView addSubview:self.labelToday];
+    [self.labelToday mas_makeConstraints:^(MASConstraintMaker *make) {
+        
+        make.top.equalTo(_labelTemperature.mas_bottom).offset(80);
+        make.left.equalTo(_firstView.mas_right).offset(-80);
+        make.bottom.equalTo(_firstView.mas_bottom).offset(0);
+        make.right.equalTo(_firstView.mas_right).offset(0);
+>>>>>>> cddd5bc1e2ff8f3643d845b54bd0b46bfd3a0676
     }];
     
     
@@ -201,22 +247,15 @@
     self.model6 = [[ScrollViewModel alloc]init];
     self.model7 = [[ScrollViewModel alloc]init];
     
-    NSArray *modelArray = @[_model1, _model2, _model3, _model4, _model5, _model6, _model7];
+    _modelArray = @[_model1, _model2, _model3, _model4, _model5, _model6, _model7];
     //第二个scrollView里的约束
     UIView *lastView;
     
-    int i = 0;
-    for (ScrollViewModel *view in modelArray) {
+//    int i = 0;
+    for (ScrollViewModel *view in _modelArray) {
         [self.scrollViewSecond addSubview:view];
         //model1里面的各种label的数据
-        view.labelData.text = [WeatherManager shareInstance].arrayLife[i];
-        view.labelData.textAlignment = NSTextAlignmentCenter;
-        view.labelData.textColor = [UIColor whiteColor];
-        view.labelName.text = [WeatherManager shareInstance].arrayLifeName[i];
-        view.labelName.textAlignment = NSTextAlignmentCenter;
-        view.labelName.textColor = [UIColor whiteColor];
-        view.labelData.font = [UIFont systemFontOfSize:16];
-        i = i + 1;
+
         //约束
         [view.labelName mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(view.mas_top).offset(0);
@@ -262,29 +301,15 @@
     self.futureModel6 = [[FutureModel alloc]init];
 
     
-    NSArray *futureModelArray = @[_futureModel1, _futureModel2, _futureModel3, _futureModel4, _futureModel5, _futureModel6];
+    _futureModelArray = @[_futureModel1, _futureModel2, _futureModel3, _futureModel4, _futureModel5, _futureModel6];
     //未来6天天气模板里的约束
     UIView *lastView2;
 
     int j = 0;
-    for (FutureModel *view in futureModelArray) {
+    for (FutureModel *view in _futureModelArray) {
         [self.secondView addSubview:view];
 
-        //星期几
-        Model *model = [WeatherManager shareInstance].arrayDayData[j+1];
-        NSString *stringDay = @" 星期";
-        view.labelWeak.text = [stringDay stringByAppendingFormat:@"%@",model.week];
-        view.labelWeak.textColor = [UIColor whiteColor];
-        NSArray *array = [WeatherManager shareInstance].arrayDay[j+1];
-        //温度和风力
-        NSString *string = @"    ";
-        string = [string stringByAppendingFormat:@"%@",array[2]];
-        string = [string stringByAppendingFormat:@"°       %@",array[4]];
-        view.labelTemperature.text = string;
-        view.labelTemperature.textColor = [UIColor whiteColor];
-        view.labelTemperature.textAlignment = NSTextAlignmentCenter;
-        //图片
-        view.imageWeather.image = [UIImage imageNamed:array[0]];
+
         j = j + 1;
 //        model2里面的各种label的约束
         //星期几
@@ -360,21 +385,14 @@
     FutureModel *futureModel9 = [[FutureModel alloc]init];
     FutureModel *futureModel10 = [[FutureModel alloc]init];
     
-    NSArray *nightArray = @[futureModel7, futureModel8, futureModel9, futureModel10];
+    _nightArray = @[futureModel7, futureModel8, futureModel9, futureModel10];
     //夜里天气模板里的约束
     UIView *lastView3;
-    NSArray *dataArray = @[@"农历", @"天气", @"最高温度", @"风向"];
-    int k = 0;
-    
-    Model *model = [WeatherManager shareInstance].arrayDayData[0];
-    
-    NSArray *array = [WeatherManager shareInstance].arrayNight[0];
-    NSArray *dataArray2 = @[model.nongli, array[1], [array[2] stringByAppendingString:@"°"], array[3]];
-    //夜里天气图片
+
+//    //夜里天气图片
     self.imageBig = [[UIImageView alloc]init];
     [self.thirdView addSubview:self.imageBig];
-    self.imageBig.image = [UIImage imageNamed:[array[0] stringByAppendingString:@"GN.png"]];
-    NSLog(@"%@",[array[0] stringByAppendingString:@"GN"]);
+    
     [self.imageBig mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.labelNight.mas_bottom).offset(20);
         make.bottom.equalTo(self.thirdView.mas_bottom).offset(-20);
@@ -383,21 +401,11 @@
         make.width.equalTo(@120);
     }];
     
-    
-    
-    
-    
-    for (FutureModel *view in nightArray) {
+
+    for (FutureModel *view in _nightArray) {
         [self.thirdView addSubview:view];
 
-        view.labelWeak.text = dataArray[k];
-        view.labelWeak.textColor = [UIColor whiteColor];
-        view.labelWeak.textAlignment = NSTextAlignmentCenter;
-        view.labelTemperature.text = dataArray2[k];
-        view.labelTemperature.textColor = [UIColor whiteColor];
-        view.labelTemperature.textAlignment = NSTextAlignmentRight;
 
-        k = k + 1;
         //  model3里面的各种label的约束
         //夜里的各种数据名称
         [view.labelWeak mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -415,7 +423,7 @@
             make.right.equalTo(view.labelTemperature.mas_left).offset(0);
             make.width.equalTo(@0);
         }];
-        //夜里各种数据
+        //夜里天气
         [view.labelTemperature mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(view.mas_top).offset(0);
             make.left.equalTo(view.imageWeather.mas_right).offset(0);
@@ -446,7 +454,6 @@
     }];
     
 
-    
     
     
     

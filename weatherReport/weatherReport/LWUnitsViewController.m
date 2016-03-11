@@ -36,7 +36,6 @@
 }
 
 #pragma mark - UITableViewDataSource,UITableViewDelegate 代理方法
-
 #pragma mark 返回行数
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 1;
@@ -55,8 +54,11 @@
         EnumCell = Cell;
     }
     
+<<<<<<< HEAD
     EnumCell.backgroundColor = [UIColor clearColor];
 
+=======
+>>>>>>> cddd5bc1e2ff8f3643d845b54bd0b46bfd3a0676
     return EnumCell;
 }
 #pragma mark - 温度单位点击事案件
