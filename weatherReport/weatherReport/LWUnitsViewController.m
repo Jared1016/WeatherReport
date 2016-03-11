@@ -35,7 +35,6 @@
 }
 
 #pragma mark - UITableViewDataSource,UITableViewDelegate 代理方法
-
 #pragma mark 返回行数
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 1;
@@ -59,7 +58,6 @@
         EnumCell = cell;
     }
     
-
     return EnumCell;
 }
 

@@ -27,7 +27,7 @@
                                 <action selector="setAction:" destination="BYZ-38-t0r" id="qk4-QK-GMD"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="sVh-HX-9jt">
+                        <barButtonItem key="rightBarButtonItem" title="切换" style="plain" id="sVh-HX-9jt">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="addCityAction:" destination="BYZ-38-t0r" id="Xty-Hd-eUG"/>

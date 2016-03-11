@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import "ITRAirSideMenu.h"
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
@@ -19,6 +20,7 @@
 @property ITRAirSideMenu *itrAirSideMenu;
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
+
 
 
 @end

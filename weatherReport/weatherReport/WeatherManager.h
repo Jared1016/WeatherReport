@@ -22,6 +22,17 @@
 @property (nonatomic,strong)NSMutableArray *arrayDay;
 @property (nonatomic,strong)NSMutableArray *arrayDayData;
 @property (nonatomic,strong)NSMutableArray *arrayNight;
+//定位的城市
+@property (nonatomic,strong)NSString *cityName;
+//网络状态
+@property (nonatomic,assign)NSInteger a;
+
+
+//选择的城市数组
+@property(nonatomic,strong)NSMutableArray *arrayDate;
+//选中的城市
+@property(nonatomic,strong)NSString *chooseCityName;
+
 
 
 + (instancetype)shareInstance;
@@ -30,14 +41,17 @@
 
 //网络请求
 - (NSData *)GetSyncActionUrl1:(NSString *)url1 url2:(NSString *)url2 cityName:(NSString *)cityName;
-//解析今天和未来7天的天气
-- (void)analysisByCityNameData:(NSData *)data;
 
-//解析每天的不同时间段的天气状况
+//解析天气状况
 - (void)analysisByWeatherChangeData:(NSData *)data;
 
-//解析城市列表
-- (void)analysisWithCityName;
+//写入本地
+- (void)writeToLocal;
+//读取本地
+- (Model *)readFromLocal;
+
+//判断网络状态
+-(BOOL) isConnectionAvailable;
 
 
 

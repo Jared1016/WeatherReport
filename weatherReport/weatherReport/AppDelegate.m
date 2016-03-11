@@ -11,7 +11,7 @@
 #import "LWLeftEnumViewController.h"
 #import "LWSetUpViewController.h"
 #import "JPUSHService.h"
-//#import "UDNavigationController.h"
+
 @interface AppDelegate ()
 
 @end
@@ -24,11 +24,9 @@
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor colorWithRed:0.044 green:1.000 blue:0.960 alpha:1.000];
     
-
-
-
+    
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[MainViewController controller]];
-
+    
     
     _itrAirSideMenu = [[ITRAirSideMenu alloc] initWithContentViewController:navigationController leftMenuViewController:[LWLeftEnumViewController controller]];
     _itrAirSideMenu.contentViewShadowColor = [UIColor blackColor];
