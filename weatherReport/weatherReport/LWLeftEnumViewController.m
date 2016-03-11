@@ -31,9 +31,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _Section1EnumLableArray = [NSMutableArray arrayWithObjects:@"分享",@"编辑地点",@"目前位置", nil ];
-    
-    
-    
+    self.LWTableView.backgroundColor = [UIColor clearColor];
+    self.view.backgroundColor = [UIColor colorWithRed:0.1436 green:0.1393 blue:0.1276 alpha:1.0];
     //不滑动
 //    self.LWTableView.scrollEnabled = NO;
     
@@ -71,23 +70,27 @@
 #pragma mark 返回内容
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     LWLeftEnumTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LWCell" forIndexPath:indexPath];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor clearColor];
     if (indexPath.section == 0) {
         if (indexPath.row <= 2) {
             cell.LwLeftEnumCellLable.text = _Section1EnumLableArray[indexPath.row];
+            cell.LwLeftEnumCellLable.textColor = [UIColor whiteColor];
         }else {
             cell.LwLeftEnumCellLable.text = _arrayDate[indexPath.row - 3];
+            cell.LwLeftEnumCellLable.textColor = [UIColor whiteColor];
         }
-        NSArray *Section1EnumImageArray = @[@"enum1.png",@"enum3.png"];
+        NSArray *Section1EnumImageArray = @[@"分享.png",@"定位2.png"];
         if (indexPath.row < 2) {
             cell.LwLeftEnumCellImageView.image = [UIImage imageNamed:Section1EnumImageArray[indexPath.row]];
         }else{
-            cell.LwLeftEnumCellImageView.image = [UIImage imageNamed:@"enum2"];
+            cell.LwLeftEnumCellImageView.image = [UIImage imageNamed:@"定位"];
         }
     }else{
         NSArray *Section2EnumLableArray = @[@"设置",@"意见与建议"];
-        NSArray *Section2EnumImageArray = @[@"enum4",@"enum5"];
+        NSArray *Section2EnumImageArray = @[@"设置",@"信息"];
         cell.LwLeftEnumCellLable.text= Section2EnumLableArray[indexPath.row];
+        cell.LwLeftEnumCellLable.textColor = [UIColor whiteColor];
         cell.LwLeftEnumCellImageView.image = [UIImage imageNamed:Section2EnumImageArray[indexPath.row]];
     }
     return cell;

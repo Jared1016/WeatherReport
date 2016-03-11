@@ -21,7 +21,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="xsM-xn-7FE">
-                        <barButtonItem key="leftBarButtonItem" title="Menu" id="Qjo-dt-bXi">
+                        <barButtonItem key="leftBarButtonItem" image="菜单2.png" id="Qjo-dt-bXi">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="setAction:" destination="BYZ-38-t0r" id="qk4-QK-GMD"/>
@@ -52,26 +52,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="82" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Y06-Hv-jmV">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="82" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Y06-Hv-jmV">
                                 <rect key="frame" x="0.0" y="20" width="207" height="716"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LWCell" rowHeight="82" id="0pd-7p-PBx" customClass="LWLeftEnumTableViewCell">
-                                        <rect key="frame" x="0.0" y="28" width="207" height="82"/>
+                                        <rect key="frame" x="0.0" y="50" width="207" height="82"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" semanticContentAttribute="playback" tableViewCell="0pd-7p-PBx" id="p8T-9H-O8D">
                                             <rect key="frame" x="0.0" y="0.0" width="207" height="81"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DfP-QZ-A3T">
-                                                    <rect key="frame" x="10" y="26" width="30" height="30"/>
+                                                    <rect key="frame" x="10" y="31" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="DfP-QZ-A3T" secondAttribute="height" id="9nv-w8-HGo"/>
-                                                        <constraint firstAttribute="width" constant="30" id="Hla-r5-nRe"/>
+                                                        <constraint firstAttribute="width" constant="20" id="Hla-r5-nRe"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dYD-Rc-Dp2">
-                                                    <rect key="frame" x="50" y="30" width="240" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dYD-Rc-Dp2">
+                                                    <rect key="frame" x="40" y="30" width="157" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -134,4 +134,7 @@
             <point key="canvasLocation" x="63" y="448"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="菜单2.png" width="32" height="32"/>
+    </resources>
 </document>

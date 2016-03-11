@@ -9,14 +9,19 @@
 #import "LWTimeAndAddressViewController.h"
 #import "TreeModel.h"
 #import "LWTimeChooseTableViewCell.h"
+#import "JPUSHService.h"
+#import "WeatherManager.h"
 @interface LWTimeAndAddressViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, copy) NSMutableString *TimeString;
 @property (nonatomic, strong) NSMutableArray *addressArray;
+@property (nonatomic, assign)int notificationtag;
 @end
 
-@implementation LWTimeAndAddressViewController
+@implementation LWTimeAndAddressViewController{
+    UILocalNotification *_notification;
+}
 
 
 -(NSMutableArray *)addressArray{
@@ -52,6 +57,10 @@
     
     UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"i11"] style:UIBarButtonItemStyleDone target:self action:@selector(returnButtonDid)];
     [self.navigationItem setLeftBarButtonItem:barItem];
+    
+    
+    self.view.backgroundColor = [UIColor colorWithRed:0.1436 green:0.1393 blue:0.1276 alpha:1.0];
+    
     // Do any additional setup after loading the view.
 }
 
@@ -59,6 +68,71 @@
 -(void)returnButtonDid{
     [self.navigationController popViewControllerAnimated:YES];
     self.block(_date);
+    
+    NSArray *array = [WeatherManager shareInstance].arrayDay[1];
+    //温度
+    
+    NSLog(@" array  %@",array[1]);
+    
+    NSString *String = [NSString stringWithFormat:@"明天 %@ ,最低气温 %@ ℃ ， 最高气温 %@ ℃",array[1],array[0],array[2]];
+    
+    [self addLocalNotificationAlertBody:String  dateString:_date];
+}
+
+- (void)addLocalNotificationAlertBody:(NSString *)alertBody dateString:(NSString *)dateStr {
+    //    判断系统
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
+        //        创建settings
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil];
+        //        应用程序注册通知，并且设定通知的形式
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        //        创建本地通知
+        UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+        //        弹框内容
+        localNotification.alertBody = alertBody;
+        //        弹框标题
+        localNotification.alertTitle = @"天气！";
+        localNotification.alertAction = @"知道了";
+        
+        
+        localNotification.repeatInterval = kCFCalendarUnitDay;
+        
+        
+        //        弹框声音
+        localNotification.soundName = UILocalNotificationDefaultSoundName;
+        //        设置通知时间
+        NSString *dateString = dateStr;
+        NSDateFormatter *strDateFor = [[NSDateFormatter alloc] init];
+        [strDateFor setDateFormat:@"yyyy年MM月dd日 HH:mm"];
+        NSDate *date = [strDateFor dateFromString:dateString];
+        NSLog(@"------%@-----",dateString);
+        localNotification.fireDate = date;
+        //        设置时区
+        localNotification.timeZone = [NSTimeZone defaultTimeZone];
+        
+        NSDictionary *dict =[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:self.notificationtag],@"nfkey",nil];
+        [localNotification setUserInfo:dict];
+        
+        //        设置
+        [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+        
+        NSString *result;
+        if (localNotification) {
+            result = @"设置本地通知成功";
+        } else {
+            result = @"设置本地通知失败";
+        }
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"设置"
+                                                        message:result
+                                                       delegate:self
+                                              cancelButtonTitle:@"确定"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+        
+    } else {
+        NSLog(@"版本低于8.0");
+    }
+    
 }
 
 #pragma mark - 添加数据
@@ -135,11 +209,14 @@
         
         if (indexPath.section == 0 && indexPath.row == 0) {
             cell.textLabel.text = @"时间";
+            cell.textLabel.textColor = [UIColor whiteColor];
             if (_date == nil) {
                 
                 cell.detailTextLabel.text = @"";
+                cell.detailTextLabel.textColor = [UIColor whiteColor];
             }else{
                 cell.detailTextLabel.text = _date;
+                cell.detailTextLabel.textColor = [UIColor whiteColor];
             }
             
             cell.detailTextLabel.textColor = [UIColor colorWithRed:0.1827 green:0.4011 blue:1.0 alpha:1.0];
@@ -148,7 +225,8 @@
             
             NSArray *array = @[@"目前位置"];
             cell.textLabel.text = array[indexPath.row];
- 
+            cell.textLabel.textColor = [UIColor whiteColor];
+            
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
         cell.selectionStyle = UITableViewCellSelectionStyleGray;

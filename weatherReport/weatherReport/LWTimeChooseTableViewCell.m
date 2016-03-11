@@ -39,7 +39,7 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     
     //为日期格式器设置格式字符串
-    [dateFormatter setDateFormat:@"HH时mm分"];
+    [dateFormatter setDateFormat:@"yyyy年MM月dd日 HH:mm"];
     
     //使用日期格式器格式化日期、时间
     NSString *destDateString = [dateFormatter stringFromDate:selected];

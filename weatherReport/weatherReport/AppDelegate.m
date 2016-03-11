@@ -36,12 +36,13 @@
     _itrAirSideMenu.contentViewShadowOffset = CGSizeMake(0, 0);
     _itrAirSideMenu.contentViewShadowOpacity = 0.6;
     _itrAirSideMenu.contentViewShadowRadius = 12;
-    _itrAirSideMenu.contentViewShadowEnabled = YES;
+    _itrAirSideMenu.contentViewShadowEnabled = NO;
+    
     
     //content view animation properties
     _itrAirSideMenu.contentViewScaleValue = 0.7f;
-    _itrAirSideMenu.contentViewRotatingAngle = 30.0f;
-    //    _itrAirSideMenu.contentViewTranslateX = 130.0f;
+    _itrAirSideMenu.contentViewRotatingAngle = 30;
+        _itrAirSideMenu.contentViewTranslateX = 50.0f;
     
     _itrAirSideMenu.backgroundImage = [UIImage imageNamed:@"1"];
     
@@ -49,28 +50,42 @@
     _itrAirSideMenu.menuViewRotatingAngle = 30.0f;
     _itrAirSideMenu.menuViewTranslateX = 20.0f;
     
-    
-    
-    if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
-        //可以添加自定义categories
-        [JPUSHService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
-                                                          UIUserNotificationTypeSound |
-                                                          UIUserNotificationTypeAlert)
-                                              categories:nil];
-    } else {
-        //categories 必须为nil
-        [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                          UIRemoteNotificationTypeSound |
-                                                          UIRemoteNotificationTypeAlert)
-                                              categories:nil];
-    }
-    
-    
     self.window.rootViewController = _itrAirSideMenu;
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = [UIColor blackColor];
     [self.window makeKeyAndVisible];
+    
+    
+    
     // Override point for customization after application launch.
     return YES;
+}
+
+
+
+#pragma mark - 接收本地通知
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+//    // 角标设为0
+//    if ([notification.alertTitle isEqualToString:@"xxxxxxxxxxx"] ) {
+//        notification.applicationIconBadgeNumber = 0;
+//    }
+    
+//    NSLog(@" function == %s, line == %d",__FUNCTION__,__LINE__);
+    NSString *body = notification.alertBody;
+    NSString *title = notification.alertTitle;
+    NSString *action = notification.alertAction;
+    
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:title message:body preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *alertAction = [UIAlertAction actionWithTitle:action style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertVC addAction:alertAction];
+    // 退出弹框
+    [self.window.rootViewController showViewController:alertVC sender:nil];
+    // 关闭alertVC
+    [self.window.rootViewController.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+    // 取消通知
+    [application cancelAllLocalNotifications];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

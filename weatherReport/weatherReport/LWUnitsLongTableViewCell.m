@@ -25,7 +25,8 @@
         _LWUnitSegmentLong.frame = CGRectMake(20, 10, 300, 30);
         
         [self.contentView addSubview:_LWUnitSegmentLong];
-
+    
+    _LWUnitSegmentLong.selectedSegmentIndex = 2;
 }
 
 - (void)awakeFromNib {

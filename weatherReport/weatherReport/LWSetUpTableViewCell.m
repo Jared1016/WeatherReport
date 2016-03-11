@@ -22,7 +22,7 @@
     // lable
     _LWEnumNameLable = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, 150, 40)];
     [self.contentView addSubview:_LWEnumNameLable];
-    
+    _LWEnumNameLable.textColor = [UIColor whiteColor];
     // switch
     _LWEnumSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(CGRectGetWidth([UIScreen mainScreen].bounds) - 70, 10, 150, 40)];
     [self .contentView addSubview:_LWEnumSwitch];

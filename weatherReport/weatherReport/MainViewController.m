@@ -52,10 +52,19 @@
     self.mv.scrollViewFirst.delegate = self;
     //    放View1的数据
     [self setView1];
+    
+    [self viewDidAppear:YES];
 
 }
 
-
+-(void)viewDidAppear:(BOOL)animated{
+    if ([WeatherManager shareInstance].activeCentigrade == YES) {
+        self.mv.labelTemp.text = [[WeatherManager shareInstance].modelAll.temperature stringByAppendingString:@"℉"];
+    }
+    if ([WeatherManager shareInstance].activeCentigrade == NO) {
+        self.mv.labelTemp.text = [[WeatherManager shareInstance].modelAll.temperature stringByAppendingString:@"℃"];
+    }
+}
 
 //数据请求  和解析
 - (void)dataRequest{

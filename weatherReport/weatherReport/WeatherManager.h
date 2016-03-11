@@ -22,7 +22,8 @@
 @property (nonatomic,strong)NSMutableArray *arrayDay;
 @property (nonatomic,strong)NSMutableArray *arrayDayData;
 @property (nonatomic,strong)NSMutableArray *arrayNight;
-
+//通知开关
+@property (nonatomic,assign)BOOL active;
 
 + (instancetype)shareInstance;
 
@@ -38,7 +39,8 @@
 
 //解析城市列表
 - (void)analysisWithCityName;
-
+//度数切换
+@property (nonatomic,assign)BOOL activeCentigrade;
 
 
 

@@ -11,7 +11,9 @@
 #import "MainViewController.h"
 #import "LWUnitsViewController.h"
 #import "LWNoticeViewController.h"
-@interface LWSetUpViewController ()<UITableViewDataSource,UITableViewDelegate>
+#import "ITRAirSideMenu.h"
+#import "AppDelegate.h"
+@interface LWSetUpViewController ()<UITableViewDataSource,UITableViewDelegate,ITRAirSideMenuDelegate>
 @property (nonatomic, strong) UITableView *SetUpEnumTableView;
 @end
 
@@ -28,7 +30,11 @@
     // 注册cell
 //    [self.SetUpEnumTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"setup"];
     
-    self.SetUpEnumTableView.backgroundColor = [UIColor whiteColor];
+    self.SetUpEnumTableView.backgroundColor = [UIColor clearColor];
+    
+    // view 背景颜色
+    self.view.backgroundColor = [UIColor colorWithRed:0.1436 green:0.1393 blue:0.1276 alpha:1.0];
+    
     
     // 导航栏右侧完成按钮
     UIBarButtonItem *RightButton = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(RightButtonAction)];
@@ -38,6 +44,12 @@
     // 添加视图
     [self.view addSubview:self.SetUpEnumTableView];
     // Do any additional setup after loading the view.
+    // 导航栏颜色
+    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    UIColor * cc = [UIColor whiteColor];
+    NSDictionary * dict = [NSDictionary dictionaryWithObject:cc forKey: NSForegroundColorAttributeName];
+    self.navigationController.navigationBar.titleTextAttributes = dict;
 }
 
 #pragma mark - 导航栏右侧完成按钮点击事件；
@@ -47,18 +59,23 @@
      *  暂时这么跳转
      */
     [self dismissViewControllerAnimated:YES completion:nil];
+    ITRAirSideMenu *itrSideMenu = ((AppDelegate *)[UIApplication sharedApplication].delegate).itrAirSideMenu;
+    //update content view controller with setContentViewController
+    [itrSideMenu hideMenuViewController];
 }
 
 #pragma mark - UITableViewDataSource,UITableViewDelegate代理
 
 #pragma mark 返回行数
 -(NSInteger )tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 4;
+    return 3;
 }
 
 #pragma mark cell内容
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    tableView.backgroundColor = [UIColor clearColor];
     UITableViewCell *EnumCell = nil;
+    
     // 根据indexPath.row 使用不同的cell
     if (indexPath.row < 2) {
         EnumCell = [tableView dequeueReusableCellWithIdentifier:@"cells"];
@@ -67,24 +84,22 @@
         }
         NSArray *FirstArray = @[@"单位",@"每日通知"];
         EnumCell.textLabel.text = FirstArray[indexPath.row];
+        EnumCell.textLabel.textColor = [UIColor whiteColor];
         EnumCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 //        cell = EnumCell;
     }else if (indexPath.row == 2){
-        LWSetUpTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell_one"];
-        if (cell == nil) {
-            cell = [[LWSetUpTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell_one"];
-        }
-        cell.LWEnumNameLable.text = @"未来短时通知";
-        EnumCell = cell;
-    }else if (indexPath.row == 3){
         EnumCell = [tableView dequeueReusableCellWithIdentifier:@"cells"];
         if (EnumCell == nil) {
             EnumCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cells"];
         }
         EnumCell.textLabel.text = @"版本";
+        EnumCell.textLabel.textColor = [UIColor whiteColor];
         EnumCell.detailTextLabel.text = @"1.0(00001)";
+        EnumCell.detailTextLabel.textColor = [UIColor whiteColor];
+        
     }
-
+    EnumCell.backgroundColor = [UIColor clearColor];
+    EnumCell.selectionStyle = UITableViewCellSelectionStyleNone;
     return EnumCell;
 }
 

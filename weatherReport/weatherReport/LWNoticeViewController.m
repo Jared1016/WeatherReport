@@ -13,15 +13,17 @@
 #import "LWNoticeRowTableViewCell.h"
 #import "LWTimeAndAddressViewController.h"
 #import "JPUSHService.h"
+#import "WeatherManager.h"
+#import "Model.h"
 @interface LWNoticeViewController ()<UITableViewDataSource,UITableViewDelegate>
 @property (nonatomic, strong) UITableView *LWNoticeTableView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) NSIndexPath* IndexPathAll;
+
+
 @end
 
-@implementation LWNoticeViewController{
-    UILocalNotification *_notification;
-}
+@implementation LWNoticeViewController
 
 -(NSMutableArray *)dataArray{
     if (_dataArray == nil) {
@@ -40,7 +42,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"每日通知";
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithRed:0.1436 green:0.1393 blue:0.1276 alpha:1.0];
     // 初始化TableView
     _LWNoticeTableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStyleGrouped];
     // 设置代理
@@ -71,7 +73,12 @@
     TreeModel *node = [TreeModel new];
     node.type = NodeTypeSectionHead;
     node.sonNodes = nil;
-    node.isExpanded = YES; // 关闭状态
+    if ([WeatherManager shareInstance].active  == YES) {
+        node.isExpanded = YES;
+    }else{
+        node.isExpanded = NO; // 关闭状态
+    }
+    
     
     
     // 第二层
@@ -128,17 +135,22 @@
         if (cell == nil) {
             cell = [[LWNoticeTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:indentifiderHead];
         }
-
+        
+        
         [cell.LWNoticeSwitch addTarget:self action:@selector(LWNoticeSwitchAction:) forControlEvents:UIControlEventAllTouchEvents];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.backgroundColor = [UIColor clearColor];
         return cell;
     }else{
         LWNoticeRowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:indentifiderRow forIndexPath:indexPath];
         cell.node = node;
         RowCell *nodeData = node.nodeData;
         cell.intervalLable.text = nodeData.interval;
+        cell.intervalLable.textColor = [UIColor whiteColor];
         cell.setUpTimeLable.text = _date;
+        cell.setUpTimeLable.textColor = [UIColor whiteColor];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        cell.backgroundColor = [UIColor clearColor];
         return cell;
     }
     
@@ -162,6 +174,17 @@
 
 #pragma mark - cell 上开关的响应事件
 -(void)LWNoticeSwitchAction:(UISwitch *)Switch {
+    
+    if ([WeatherManager shareInstance].active  == YES) {
+        [WeatherManager shareInstance].active  = NO;
+    }else{
+        [WeatherManager shareInstance].active  = YES;
+    }
+    
+    if (Switch.on == NO) {
+        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    }
+    
         TreeModel *node = _dataArray[_IndexPathAll.section];
         BOOL isExpand = node.isExpanded;
         
@@ -178,29 +201,11 @@
             
         }
         [self.LWNoticeTableView reloadData];
-    
-    if (Switch.on) {
-        NSDateFormatter* formater = [[NSDateFormatter alloc] init];
-        [formater setDateFormat:@"HH时mm分"];
-        NSDate* date = [formater dateFromString:_date];
-        _notification = [JPUSHService setLocalNotification:date alertBody:@"zz" badge:-1 alertAction:@"确定" identifierKey:@"zzz" userInfo:nil soundName:nil];
-        NSString *result;
-        if (_notification) {
-            result = @"设置本地通知成功";
-        } else {
-            result = @"设置本地通知失败";
-        }
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"设置"
-                                                        message:result
-                                                       delegate:self
-                                              cancelButtonTitle:@"确定"
-                                              otherButtonTitles:nil, nil];
-        [alert show];
-    }else{
-        [JPUSHService clearAllLocalNotifications];
-    }
-    
 }
+
+
+
+
 
 
 

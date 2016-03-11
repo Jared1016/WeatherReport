@@ -132,7 +132,7 @@
         make.top.equalTo(_labelTemperature.mas_bottom).offset(0);
         make.left.equalTo(_firstView.mas_left).offset(0);
         make.bottom.equalTo(_firstView.mas_bottom).offset(0);
-        make.right.equalTo(_firstView.mas_left).offset(140);
+        make.right.equalTo(_firstView.mas_left).offset(200);
     }];
     
     

@@ -7,7 +7,7 @@
 //
 
 #import "LWUnitsTableViewCell.h"
-
+#import "WeatherManager.h"
 @implementation LWUnitsTableViewCell
 
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -24,7 +24,12 @@
         _LWUnitSegment.frame = CGRectMake(20, 10, 150, 30);
         [self.contentView addSubview:_LWUnitSegment];
         
-    
+    if ([WeatherManager shareInstance].activeCentigrade == YES) {
+        _LWUnitSegment.selectedSegmentIndex = 1;
+    }
+    if ([WeatherManager shareInstance].activeCentigrade == NO) {
+        _LWUnitSegment.selectedSegmentIndex = 0;
+    }
     
 }
 

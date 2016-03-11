@@ -12,4 +12,5 @@
 @property (retain,strong,nonatomic) TreeModel *node;
 @property (nonatomic, strong) UILabel *LWNoticeLable;
 @property (nonatomic, strong) UISwitch *LWNoticeSwitch;
+@property (nonatomic, strong) NSArray *localArray;
 @end

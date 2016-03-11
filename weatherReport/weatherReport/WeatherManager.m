@@ -42,6 +42,14 @@ static WeatherManager *manager = nil;
 //    return _arrayMark;
 //}
 
+
+- (BOOL)activeCentigrade{
+    if (!_activeCentigrade) {
+        _activeCentigrade =  NO;
+    }
+    return _activeCentigrade;
+}
+
 - (NSArray *)arrayLife{
     if (!_arrayLife) {
         _arrayLife = [NSArray array];
@@ -49,6 +57,12 @@ static WeatherManager *manager = nil;
     return _arrayLife;
 }
 
+- (BOOL)active{
+    if (!_active) {
+        _active = NO;
+    }
+    return _active;
+}
 
 - (NSMutableArray *)arrayDayData{
     if (!_arrayDayData) {
